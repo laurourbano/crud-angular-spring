@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
+import { Observable, catchError, of } from 'rxjs';
 import { Course } from '../model/course';
+import { CoursesService } from '../services/courses.service';
 
 @Component({
   selector: 'app-courses',
@@ -10,27 +11,29 @@ import { Course } from '../model/course';
 export class CoursesComponent {
 
   displayedColumns: string[] = [ 'name', 'category', 'acoes' ];
-  dataSource = new MatTableDataSource<Course>([]);
+  courses$!: Observable<Course[]>;
 
-  constructor() {
-    this.dataSource.data = [
-      { _id: 1, name: 'Angular: CLI', category: 'Angular' },
-      { _id: 2, name: 'Angular: Forms', category: 'Angular' },
-      { _id: 3, name: 'Angular: HTTP', category: 'Angular' },
-      { _id: 4, name: 'Angular: Router', category: 'Angular' },
-    ];
+  constructor(private coursesService: CoursesService) {
+    this.courses$ = this.coursesService.listCourses()
+      .pipe(
+        catchError(error => {
+          console.error(error);
+          return of([]);
+        }
+        )
+      );
   }
 
   edit(course: Course) {
-    console.log(course);
+    console.info('edit ' + course.name);
   }
 
   delete(course: Course) {
-    console.log(course);
+    console.info('delete ' + course.name);
   }
 
   create() {
-    console.log('create');
+    console.info('create a new course');
   }
 
 }

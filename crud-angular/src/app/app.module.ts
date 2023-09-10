@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MaterialModule } from './shared/material/material.module';
 import { CoursesModule } from './courses/courses.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,7 @@ import { CoursesModule } from './courses/courses.module';
     BrowserAnimationsModule,
     MaterialModule,
     CoursesModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [ AppComponent ]

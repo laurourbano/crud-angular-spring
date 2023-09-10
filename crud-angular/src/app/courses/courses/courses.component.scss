@@ -12,10 +12,19 @@ th {
   width: 25%;
 }
 
-mat-card-title {
-  margin: 10px 20px;
-}
-
 td button {
   margin-right: 5px;
+}
+
+mat-toolbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+.spinner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+  background-color: rgba(0, 0, 0, 0.1);
 }
