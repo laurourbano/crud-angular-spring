@@ -21,8 +21,12 @@ public class CrudSpringApplication {
 			couseRepository.deleteAll();
 			Course c = new Course();
 			c.setName("Java");
-			c.setCategory("Programação");
+			c.setCategory("Back-end");
+			Course c2 = new Course();
+			c2.setName("Angular");
+			c2.setCategory("Front-end");
 			couseRepository.save(c);
+			couseRepository.save(c2);
 		};
 	}
 
