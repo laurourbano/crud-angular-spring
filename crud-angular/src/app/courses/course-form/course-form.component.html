@@ -10,6 +10,7 @@
 
       <mat-form-field>
         <mat-select formControlName="category" placeholder="Categoria">
+          <mat-option [value]="''" selected  disabled>Selecione</mat-option>
           <mat-option [value]="'Front-end'">Front-end</mat-option>
           <mat-option [value]="'Back-end'">Back-end</mat-option>
         </mat-select>
