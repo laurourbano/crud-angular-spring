@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, catchError, of } from 'rxjs';
 import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
 import { Course } from '../model/course';
@@ -17,7 +18,9 @@ export class CoursesComponent {
 
   constructor(
     private coursesService: CoursesService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public router: Router,
+    public route: ActivatedRoute
   ) {
     this.courses$ = this.coursesService.listCourses()
       .pipe(
@@ -44,7 +47,7 @@ export class CoursesComponent {
   }
 
   create() {
-    console.info('create a new course');
+    this.router.navigate([ 'new' ], { relativeTo: this.route } );
   }
 
 }
