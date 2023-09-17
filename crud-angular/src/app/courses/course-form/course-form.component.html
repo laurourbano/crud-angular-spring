@@ -4,13 +4,13 @@
   </mat-card-header>
   <mat-card-content>
     <form [formGroup]="form">
-      <mat-form-field>
-        <input matInput type="text" placeholder="Nome" formControlName="name">
+      <mat-form-field appearance="outline">
+        <input matInput type="text" placeholder="Nome" formControlName="name" required>
       </mat-form-field>
 
-      <mat-form-field>
-        <mat-select formControlName="category" placeholder="Categoria">
-          <mat-option [value]="''" selected  disabled>Selecione</mat-option>
+      <mat-form-field appearance="outline">
+        <mat-select formControlName="category" placeholder="Categoria" required>
+          <mat-option [value]="" selected disabled>Selecione</mat-option>
           <mat-option [value]="'Front-end'">Front-end</mat-option>
           <mat-option [value]="'Back-end'">Back-end</mat-option>
         </mat-select>

@@ -3,13 +3,15 @@ import { NgModule } from '@angular/core';
 import { ErrorDialogComponent } from './components/error-dialog/error-dialog.component';
 import { MaterialModule } from './material/material.module';
 import { CategoryPipe } from './pipes/category.pipe';
+import { ConfirmCancelDialogComponent } from './components/confirm-cancel-dialog/confirm-cancel-dialog.component';
 
 
 
 @NgModule({
   declarations: [
     ErrorDialogComponent,
-    CategoryPipe
+    CategoryPipe,
+    ConfirmCancelDialogComponent
   ],
   imports: [
     CommonModule,
