@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmCancelDialogComponent } from 'src/app/shared/components/confirm-cancel-dialog/confirm-cancel-dialog.component';
+import { Course } from '../../model/course';
 import { CoursesService } from '../../services/courses.service';
 
 @Component({
@@ -14,6 +15,7 @@ import { CoursesService } from '../../services/courses.service';
 export class CourseFormComponent {
 
   form = this.formBuilder.group({
+    _id: [ 0 ],
     name: [ '', [ Validators.required, Validators.minLength(3) ] ],
     category: [ '', [ Validators.required ] ],
   });
@@ -26,6 +28,12 @@ export class CourseFormComponent {
     private service: CoursesService,
     private snackBar: MatSnackBar
   ) {
+    const course: Course = this.route.snapshot.data[ 'course' ];
+    if (course) {
+      this.form.setValue(course);
+    } else {
+      this.form.reset();
+    }
   }
 
   onAdd() {

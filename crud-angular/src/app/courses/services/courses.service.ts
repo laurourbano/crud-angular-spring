@@ -16,15 +16,42 @@ export class CoursesService {
     return this.http.get(this.API)
       .pipe(
         first(),
-        tap(console.table)
+        tap(console.log)
+      );
+
+  }
+
+  loadById(id: number) {
+    return this.http.get<Course>(`${ this.API }/${ id }`)
+      .pipe(
+        first(),
+        tap(console.log)
       );
   }
 
   save(record: Partial<Course>) {
-    return this.http.post(this.API, record)
+    console.log(record)
+    if (record._id) {
+      console.log('update')
+      return this.update(record);
+    }
+    console.log('create')
+    return this.create(record);
+  }
+
+  private create(record: Partial<Course>) {
+    return this.http.post<Course>(this.API, record)
       .pipe(
         first(),
-        tap(console.table)
+        tap(console.log)
+      );
+  }
+
+  private update(record: Partial<Course>) {
+    return this.http.put<Course>(`${ this.API }/${ record._id }`, record)
+      .pipe(
+        first(),
+        tap(console.log)
       );
   }
 }
