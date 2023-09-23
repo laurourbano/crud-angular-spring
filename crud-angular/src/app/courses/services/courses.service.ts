@@ -16,7 +16,7 @@ export class CoursesService {
     return this.http.get(this.API)
       .pipe(
         first(),
-        tap(console.log)
+        tap(console.debug)
       );
 
   }
@@ -25,17 +25,17 @@ export class CoursesService {
     return this.http.get<Course>(`${ this.API }/${ id }`)
       .pipe(
         first(),
-        tap(console.log)
+        //tap(console.log)
       );
   }
 
   save(record: Partial<Course>) {
-    console.log(record)
+    //console.log(record)
     if (record._id) {
-      console.log('update')
+      //console.log('update')
       return this.update(record);
     }
-    console.log('create')
+    //console.log('create')
     return this.create(record);
   }
 
@@ -43,7 +43,7 @@ export class CoursesService {
     return this.http.post<Course>(this.API, record)
       .pipe(
         first(),
-        tap(console.log)
+        // tap(console.log)
       );
   }
 
@@ -51,7 +51,14 @@ export class CoursesService {
     return this.http.put<Course>(`${ this.API }/${ record._id }`, record)
       .pipe(
         first(),
-        tap(console.log)
+        // tap(console.log)
       );
+  }
+
+  remove(id: number) {
+    return this.http.delete(`${ this.API }/${ id }`)
+      .pipe(
+        first()
+      )
   }
 }

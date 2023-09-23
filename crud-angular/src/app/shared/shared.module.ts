@@ -4,6 +4,7 @@ import { ErrorDialogComponent } from './components/error-dialog/error-dialog.com
 import { MaterialModule } from './material/material.module';
 import { CategoryPipe } from './pipes/category.pipe';
 import { ConfirmCancelDialogComponent } from './components/confirm-cancel-dialog/confirm-cancel-dialog.component';
+import { DeleteCancelDialogComponent } from './components/delete-cancel-dialog/delete-cancel-dialog.component';
 
 
 
@@ -11,7 +12,8 @@ import { ConfirmCancelDialogComponent } from './components/confirm-cancel-dialog
   declarations: [
     ErrorDialogComponent,
     CategoryPipe,
-    ConfirmCancelDialogComponent
+    ConfirmCancelDialogComponent,
+    DeleteCancelDialogComponent
   ],
   imports: [
     CommonModule,

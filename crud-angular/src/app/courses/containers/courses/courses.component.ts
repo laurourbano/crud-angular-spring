@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, catchError, of } from 'rxjs';
+import { DeleteCancelDialogComponent } from 'src/app/shared/components/delete-cancel-dialog/delete-cancel-dialog.component';
 import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
 import { Course } from '../../model/course';
 import { CoursesService } from '../../services/courses.service';
@@ -20,8 +22,13 @@ export class CoursesComponent {
     private coursesService: CoursesService,
     public dialog: MatDialog,
     public router: Router,
-    public route: ActivatedRoute
+    public route: ActivatedRoute,
+    private snackBar: MatSnackBar
   ) {
+    this.refresh()
+  }
+
+  refresh() {
     this.courses$ = this.coursesService.listCourses()
       .pipe(
         catchError(error => {
@@ -43,11 +50,37 @@ export class CoursesComponent {
   }
 
   onDelete(course: Course) {
-    console.info('delete ' + course.name);
+    this.dialog.open(DeleteCancelDialogComponent).afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.coursesService.remove(course._id).subscribe(() => {
+          this.snackBar.open('Curso excluído com sucesso!', 'Close', {
+            duration: 5000,
+            horizontalPosition: 'center',
+            verticalPosition: 'bottom',
+          });
+          this.refresh();
+        }, () => {
+          this.onError('Erro ao excluir curso.')
+        }
+        );
+      }
+    });
   }
 
   onAdd() {
     this.router.navigate([ 'new' ], { relativeTo: this.route });
+  }
+
+  onCancel() {
+    this.dialog.open(DeleteCancelDialogComponent).afterClosed().subscribe((confirmed: boolean) => {
+      if (!confirmed) {
+        this.snackBar.open('Cancelado', 'Close', {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom',
+        });
+      }
+    });
   }
 
 }

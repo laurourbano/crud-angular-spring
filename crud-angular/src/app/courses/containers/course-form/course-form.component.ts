@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmCancelDialogComponent } from 'src/app/shared/components/confirm-cancel-dialog/confirm-cancel-dialog.component';
+import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
 import { Course } from '../../model/course';
 import { CoursesService } from '../../services/courses.service';
 
@@ -36,23 +37,28 @@ export class CourseFormComponent {
     }
   }
 
+  onError(errorMsg: string) {
+    this.dialog.open(ErrorDialogComponent, {
+      data: errorMsg
+    });
+  }
+
   onAdd() {
     if (this.form.valid) {
       this.service.save(this.form.value).subscribe(() => {
-        this.snackBar.open('Curso Cadastrado com Sucesso', 'Close', {
+        this.snackBar.open('Curso salvo com sucesso', 'Close', {
           duration: 5000,
           horizontalPosition: 'center',
           verticalPosition: 'bottom',
         });
         this.navigateToCourses();
       }, () => {
-        this.snackBar.open('Erro ao Cadastrar Curso', 'Close', {
-          duration: 5000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-        });
+        this.onError('Erro ao salvar curso.');
       }
       );
+    } else {
+      this.onError(!this.form.controls.name.errors || this.form.controls.category.errors ? 'Campos obrigatórios' : 'Campos inválidos');
+      console.log(this.form.controls.name.errors, this.form.controls.category)
     }
   }
 

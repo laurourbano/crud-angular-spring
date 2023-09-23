@@ -15,10 +15,6 @@ export class CoursesListComponent {
 
   readonly displayedColumns: string[] = [ 'name', 'category', 'acoes' ];
 
-  constructor() {
-
-  }
-
   onAdd() {
     this.add.emit(true);
   }
