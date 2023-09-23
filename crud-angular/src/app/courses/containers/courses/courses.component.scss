@@ -1,19 +1,6 @@
-table {
-  width: 100%;
-}
-
-.mat-mdc-form-field {
-  font-size: 14px;
-  width: 100%;
-}
-
-td,
-th {
-  width: 25%;
-}
-
-td button {
-  margin-right: 5px;
+mat-card{
+  max-width: 80%;
+  margin: 1em auto;
 }
 
 mat-toolbar {
@@ -25,6 +12,6 @@ mat-toolbar {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  height: 60vh;
   background-color: rgba(0, 0, 0, 0.1);
 }

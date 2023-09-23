@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmCancelDialogComponent } from 'src/app/shared/components/confirm-cancel-dialog/confirm-cancel-dialog.component';
-import { CoursesService } from '../services/courses.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { CoursesService } from '../../services/courses.service';
 
 @Component({
   selector: 'app-course-form',
@@ -13,13 +13,13 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class CourseFormComponent {
 
-  form: FormGroup = this.formBuilder.group({
+  form = this.formBuilder.group({
     name: [ '', [ Validators.required, Validators.minLength(3) ] ],
-    category: [ '', Validators.required ],
+    category: [ '', [ Validators.required ] ],
   });
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: NonNullableFormBuilder,
     private router: Router,
     private route: ActivatedRoute,
     private dialog: MatDialog,
