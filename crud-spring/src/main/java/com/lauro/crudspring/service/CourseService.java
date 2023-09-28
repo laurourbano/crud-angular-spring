@@ -1,7 +1,6 @@
 package com.lauro.crudspring.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -37,21 +36,22 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
-    public Optional<Course> update(@NotNull @Positive long id, @Valid Course course) {
+    public Course update(@NotNull @Positive long id, @Valid Course course) {
         return courseRepository.findById(id)
                 .map(recordFound -> {
                     recordFound.setName(course.getName());
                     recordFound.setCategory(course.getCategory());
                     return courseRepository.save(recordFound);
-                });
+                }).orElseThrow(()-> new RecordNotFoundException(id) );
     }
 
-    public boolean delete(@NotNull @Positive long id) {
-        return courseRepository.findById(id)
-                .map(recordFound -> {
-                    courseRepository.deleteById(id);
-                    return true;
-                }).orElse(false);
+    public void delete(@NotNull @Positive long id) {
+
+        courseRepository.delete(
+                courseRepository.findById(id)
+                        .orElseThrow(() -> new RecordNotFoundException(id))
+            );
+
     }
 
 }
