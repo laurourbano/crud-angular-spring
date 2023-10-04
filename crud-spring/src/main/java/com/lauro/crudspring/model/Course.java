@@ -5,14 +5,18 @@ import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.lauro.crudspring.enums.Category;
+import com.lauro.crudspring.enums.Status;
+import com.lauro.crudspring.enums.converters.CategoryConverter;
+import com.lauro.crudspring.enums.converters.StatusConverter;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
@@ -32,15 +36,13 @@ public class Course {
     private String name;
     
     @NotNull
-    @Length(max = 20)
-    @Pattern(regexp = "Back-end|Front-end")
     @Column(length = 20, nullable = false)
-    private String category;
+    @Convert(converter = CategoryConverter.class)
+    private Category category;
 
     @NotNull
-    @Length(max = 20)
-    @Pattern(regexp = "Ativo|Inativo")
     @Column(length = 20, nullable = false)
-    private String status = "Ativo";
+    @Convert(converter = StatusConverter.class)
+    private Status status = Status.ATIVO;
     
 }
