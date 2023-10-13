@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { NonNullableFormBuilder, Validators } from '@angular/forms';
+import { FormGroup, NonNullableFormBuilder, UntypedFormArray, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmCancelDialogComponent } from 'src/app/shared/components/confirm-cancel-dialog/confirm-cancel-dialog.component';
 import { ErrorDialogComponent } from 'src/app/shared/components/error-dialog/error-dialog.component';
 import { Course } from '../../model/course';
+import { Lesson } from '../../model/lesson';
 import { CoursesService } from '../../services/courses.service';
 
 @Component({
@@ -15,11 +16,8 @@ import { CoursesService } from '../../services/courses.service';
 })
 export class CourseFormComponent {
 
-  form = this.formBuilder.group({
-    _id: [ 0 ],
-    name: [ '', [ Validators.required, Validators.minLength(3) ] ],
-    category: [ '', [ Validators.required ] ],
-  });
+  form!: FormGroup;
+
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
@@ -29,12 +27,39 @@ export class CourseFormComponent {
     private service: CoursesService,
     private snackBar: MatSnackBar
   ) {
+  }
+
+  ngOnInit(): void {
     const course: Course = this.route.snapshot.data[ 'course' ];
-    if (course) {
-      this.form.setValue(course);
+    this.form = this.formBuilder.group({
+      _id: [ course._id ],
+      name: [ course.name, [ Validators.required, Validators.minLength(3) ] ],
+      category: [ course.category, [ Validators.required ] ],
+      lessons: this.formBuilder.array(this.retrieveLessons(course))
+    });
+
+  }
+
+  private retrieveLessons(course: Course) {
+    const lessons = []
+    if (course?.lessons) {
+      course.lessons.forEach(lesson => lessons.push(this.createLesson(lesson)));
     } else {
-      this.form.reset();
+      lessons.push(this.createLesson())
     }
+    return lessons;
+  }
+
+  private createLesson(lesson: Lesson = { _id: '', name: '', youtubeUrl: '' }) {
+    return this.formBuilder.group({
+      _id: [ lesson._id ],
+      name: [ lesson.name ],
+      youtubeUrl: [ lesson.youtubeUrl ]
+    });
+  }
+
+  getLessonsFormArray() {
+    return (<UntypedFormArray>this.form.get('lessons')).controls
   }
 
   onError(errorMsg: string) {
@@ -57,8 +82,8 @@ export class CourseFormComponent {
       }
       );
     } else {
-      this.onError(!this.form.controls.name.errors || this.form.controls.category.errors ? 'Campos obrigatórios' : 'Campos inválidos');
-      console.log(this.form.controls.name.errors, this.form.controls.category)
+      this.onError(!this.form.controls[ 'name' ].errors || this.form.controls[ 'category' ].errors ? 'Campos obrigatórios' : 'Campos inválidos');
+      console.log(this.form.controls[ 'name' ].errors, this.form.controls[ 'category' ])
     }
   }
 
@@ -79,6 +104,14 @@ export class CourseFormComponent {
     this.router.navigate([ '/courses' ], { relativeTo: this.route });
   }
 
+  addLesson() {
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    lessons?.push(this.createLesson());
+  }
 
+  removeLesson(index: number) {
+    const lessons = this.form.get('lessons') as UntypedFormArray;
+    lessons?.removeAt(index);
+  }
 
 }

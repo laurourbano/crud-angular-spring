@@ -1,5 +1,8 @@
 package com.lauro.crudspring.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.Length;
@@ -10,12 +13,14 @@ import com.lauro.crudspring.enums.Status;
 import com.lauro.crudspring.enums.converters.CategoryConverter;
 import com.lauro.crudspring.enums.converters.StatusConverter;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -45,4 +50,6 @@ public class Course {
     @Convert(converter = StatusConverter.class)
     private Status status = Status.ATIVO;
     
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "course")
+    private List<Lesson> lessons = new ArrayList<>();
 }

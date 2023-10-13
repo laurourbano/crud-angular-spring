@@ -52,7 +52,7 @@ export class CoursesComponent {
   onDelete(course: Course) {
     this.dialog.open(DeleteCancelDialogComponent).afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.coursesService.remove(course._id).subscribe(() => {
+        this.coursesService.remove(Number(course._id)).subscribe(() => {
           this.snackBar.open('Curso excluído com sucesso!', 'Close', {
             duration: 5000,
             horizontalPosition: 'center',
