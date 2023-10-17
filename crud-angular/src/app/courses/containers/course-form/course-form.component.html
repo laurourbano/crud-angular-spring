@@ -1,74 +1,79 @@
-<mat-card class="mat-elevation-z8">
+<mat-card>
 
-  <mat-card-content>
+  <div class="mat-elevation-z18">
+    <mat-card-content>
 
-    <mat-toolbar color="primary" style="margin-bottom: 10px;">
-      <span>Detalhes do Curso</span>
-    </mat-toolbar>
-
-
-    <form [formGroup]="form">
-      <mat-form-field appearance="outline">
-        <mat-label>Nome do curso</mat-label>
-        <input matInput type="text" formControlName="name" required>
-        <mat-error>
-          Campo obrigatório
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Categoria</mat-label>
-        <mat-select formControlName="category" required>
-          <mat-option [value]="" selected disabled>Selecione</mat-option>
-          <mat-option [value]="'Front-end'">Front-end</mat-option>
-          <mat-option [value]="'Back-end'">Back-end</mat-option>
-        </mat-select>
-        <mat-error *ngIf="form.get('category')?.invalid">
-          Campo obrigatório
-        </mat-error>
-
-      </mat-form-field>
-
-      <mat-toolbar>
-        <span>Aulas</span>
-        <button mat-icon-button color="accent" (click)="addLesson()">
-          <mat-icon>add</mat-icon>
-        </button>
+      <mat-toolbar color="primary" style="margin-bottom: 10px;">
+        <span>Detalhes do Curso</span>
       </mat-toolbar>
 
-      <table style="width: 100%;" class="tableLessons" formArrayName="lessons"
-        *ngFor="let lesson of getLessonsFormArray(); let i = index">
 
-        <tr [formGroupName]="i">
+      <form [formGroup]="form">
+        <mat-form-field appearance="outline">
+          <mat-label>Nome do curso</mat-label>
+          <input matInput type="text" formControlName="name" required>
+          <mat-error *ngIf="form.get('name')?.invalid && form.get('name')?.touched">
+            Adicione o nome do curso
+          </mat-error>
+        </mat-form-field>
 
-          <td class="lessonName">
-            <mat-form-field appearance="outline">
-              <mat-label>Nome da aula</mat-label>
-              <input matInput formControlName="name" style="width: 60%;" required>
-            </mat-form-field>
-          </td>
-          <td class="lessonYoutube">
-            <mat-form-field appearance="outline">
-              <mat-label>Link do youtube</mat-label>
-              <span matPrefix>https://youtu.be/</span>
-              <input matInput prefix formControlName="youtubeUrl" style="width: 30%;" required>
-            </mat-form-field>
-          </td>
-          <td class="lessonActions">
-            <button mat-icon-button color="warn" (click)="removeLesson(i)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </tr>
+        <mat-form-field appearance="outline">
+          <mat-label>Categoria</mat-label>
+          <mat-select formControlName="category" required>
+            <mat-option [value]="" selected disabled>Selecione</mat-option>
+            <mat-option [value]="'Front-end'">Front-end</mat-option>
+            <mat-option [value]="'Back-end'">Back-end</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.get('category')?.invalid && form.get('category')?.touched">
+            Adicione a categoria
+          </mat-error>
 
-      </table>
+        </mat-form-field>
 
-    </form>
-  </mat-card-content>
+        <mat-toolbar>
+          <span>Aulas</span>
+          <button mat-icon-button color="accent" (click)="addLesson()">
+            <mat-icon>add</mat-icon>
+          </button>
+        </mat-toolbar>
+        <mat-error *ngIf="form.get('lessons')?.invalid && form.get('lessons')?.touched">Adicione ao menos uma aula
+        </mat-error>
 
-  <mat-card-actions align="end">
-    <button mat-raised-button color="primary" (click)="onAdd()">Salvar</button>
-    <button mat-raised-button color="warn" (click)="onCancel()">Cancelar</button>
-  </mat-card-actions>
+        <table style="width: 100%;" class="tableLessons" formArrayName="lessons"
+          *ngFor="let lesson of getLessonsFormArray(); let i = index">
 
+          <tr [formGroupName]="i">
+
+            <td class="lessonName">
+              <mat-form-field appearance="outline">
+                <mat-label>Nome da aula</mat-label>
+                <input matInput formControlName="name" style="width: 60%;" required>
+
+              </mat-form-field>
+            </td>
+            <td class="lessonYoutube">
+              <mat-form-field appearance="outline">
+                <mat-label>Link do youtube</mat-label>
+                <span matPrefix>https://youtu.be/</span>
+                <input matInput prefix formControlName="youtubeUrl" style="width: 30%;" required>
+              </mat-form-field>
+
+            </td>
+            <td class="lessonActions">
+              <button mat-icon-button color="warn" (click)="removeLesson(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+
+        </table>
+
+      </form>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" (click)="onAdd()">Salvar</button>
+      <button mat-raised-button color="warn" (click)="onCancel()">Cancelar</button>
+    </mat-card-actions>
+  </div>
 </mat-card>

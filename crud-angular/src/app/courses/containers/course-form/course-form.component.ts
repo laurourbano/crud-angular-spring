@@ -35,7 +35,7 @@ export class CourseFormComponent {
       _id: [ course._id ],
       name: [ course.name, [ Validators.required, Validators.minLength(3) ] ],
       category: [ course.category, [ Validators.required ] ],
-      lessons: this.formBuilder.array(this.retrieveLessons(course))
+      lessons: this.formBuilder.array(this.retrieveLessons(course), Validators.required)
     });
 
   }
@@ -53,13 +53,13 @@ export class CourseFormComponent {
   private createLesson(lesson: Lesson = { _id: '', name: '', youtubeUrl: '' }) {
     return this.formBuilder.group({
       _id: [ lesson._id ],
-      name: [ lesson.name ],
-      youtubeUrl: [ lesson.youtubeUrl ]
+      name: [ lesson.name, Validators.required, Validators.minLength(3), Validators.maxLength(100) ],
+      youtubeUrl: [ lesson.youtubeUrl, Validators.required, Validators.minLength(10), Validators.maxLength(11) ]
     });
   }
 
   getLessonsFormArray() {
-    return (<UntypedFormArray>this.form.get('lessons')).controls
+    return (<UntypedFormArray>this.form.get('lessons')).controls;
   }
 
   onError(errorMsg: string) {
@@ -82,8 +82,7 @@ export class CourseFormComponent {
       }
       );
     } else {
-      this.onError(!this.form.controls[ 'name' ].errors || this.form.controls[ 'category' ].errors ? 'Campos obrigatórios' : 'Campos inválidos');
-      console.log(this.form.controls[ 'name' ].errors, this.form.controls[ 'category' ])
+      this.onError(!this.form.controls[ 'name' ].errors || this.form.controls[ 'category' ].errors || this.form.controls[ 'lessons' ]?.errors ? 'Campos obrigatórios' : 'Erro ao salvar curso.');
     }
   }
 
@@ -106,12 +105,12 @@ export class CourseFormComponent {
 
   addLesson() {
     const lessons = this.form.get('lessons') as UntypedFormArray;
-    lessons?.push(this.createLesson());
+    lessons.push(this.createLesson());
   }
 
   removeLesson(index: number) {
     const lessons = this.form.get('lessons') as UntypedFormArray;
-    lessons?.removeAt(index);
+    lessons.removeAt(index);
   }
 
 }

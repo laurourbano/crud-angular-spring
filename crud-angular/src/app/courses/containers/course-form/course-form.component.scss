@@ -1,14 +1,21 @@
 //proprio componente
 :host {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 50px;
 }
 
 mat-card {
-  margin: 0 auto;
-  max-width: 80%;
-  padding: 20px;
-  box-sizing: border-box;
+  padding: 10px;
+
+  mat-toolbar {
+    width: 100%;
+  }
+
+  div {
+    width: 100%;
+  }
 
   mat-form-field {
     width: 100%;
@@ -23,7 +30,6 @@ table {
   display: flex;
   flex-direction: column;
   width: 100%;
-  flex: 1 1 auto;
 
   .lessonName {
     width: 60% !important;
